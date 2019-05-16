@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/jquery/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div id="data-form">
+    手机号：<input id="u_phone" type="text" name="phone"><span id="sphone"></span><br>
+    密码：<input id="pass" type="password" name="password"><span id="spass"></span><br>
+    <input type="button" value="登录" id="btn"><br>
+    <a href="register.html">没有账户去注册</a>
+
+</div>
+
+</body>
+<script>
+    $("#u_phone").blur(function () {
+        $.ajax({
+            type: "POST",
+            url: "/log/checkLogin",
+            dataType: "json",
+            data: {
+                phone: $("#u_phone").val()
+            },
+            success: function (data) {
+                if (data.news == "手机号不存在") {
+                    $("#sphone").html("手机号不存在");
+                } else {
+                    $("#sphone").html("");
+                }
+            },
+        });
+    });
+    $("#btn").click(function () {
+        var phone = $("#u_phone").val();
+        var pass = $("#pass").val();
+        if (phone == "") {
+            $("#sphone").html("手机号不能为空");
+            return;
+        }
+        if (pass == "") {
+            $("#spass").html("密码不能为空");
+            return;
+        }
+        $.ajax({
+            type: "GET",
+            url: "/log/ajaxLogin",
+            dataType: "json",
+            data: {
+                phone: $("#u_phone").val(),
+                pass: $("#pass").val()
+            },
+            success: function (data) {
+                // alert(data)
+                if (data.s == "success") {
+                    window.location.href = "show.html";
+                } else {
+                    alert("信息错误")
+                    window.location.href = "lose.html"
+                }
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // 状态码
+                console.log(XMLHttpRequest.status);
+                // 状态
+                console.log(XMLHttpRequest.readyState);
+                // 错误信息
+                console.log(textStatus);
+            },
+        });
+    });
+</script>
+</html>

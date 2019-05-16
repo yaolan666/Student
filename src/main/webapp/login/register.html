@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/jquery/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div>
+    手机号：<input  id="phone"type="text" name="phone" ><span id="phmsg"></span><br>
+    用户名：<input id="name" type="text" name="name"><span id="nmsg"></span><br>
+    密码：<input id="pass" type="password" name="password"><span id="psmsg"></span><br>
+    确认密码：<input id="pass1" type="password" name="password"><span id="p1smsg"></span><br>
+    性别：<input id="sex" type="text" name="sex"><span id="smsg"></span><br>
+    年龄：<input  id="age" type="text" name="age"><span id="amsg"></span><br>
+
+    <input type="submit" value="确认" id="reg" >
+</div>
+</body>
+<script>
+    $("#phone").blur(function () {
+        var phone = $("#phone").val();
+        $.ajax({
+            type : "POST",
+            url : "/log/checkPhone",
+            async: false ,
+            dataType : "json",
+
+            data: {
+                phone : $("#phone").val()
+            },
+            success : function (data) {
+                if(data.news=="手机号已註冊"){
+                    $("#phmsg").html("手机号已註冊");
+                       return false;
+                }
+                if(data.news=="手机号格式错误"){
+                    $("#phmsg").html("手机号格式错误");
+                }else{
+                    $("#phmsg").html("");
+                }
+            },
+        });
+        // alert(0)
+        // if (phone == "") {
+        //     // alert('手机号不能为空');
+        //     $("#phmsg").html("手机号不能为空");
+        //     return;
+        // }
+        // if (phone.length !== 11) {
+        //         $("#phmsg").html("手机号长度错误");
+        //         // alert('手机号长度错误');
+        //     return;
+        // }
+        //  else {
+        //     $("#phmsg").html("");
+        //
+        // }
+
+    });
+    $("#name").blur(function () {
+        var name = $("#name").val();
+        if(name==""){
+            $("#nmsg").html("名字不能为空");
+            return;
+            // alert("名字不能为空");
+        }else{
+            $("#nmsg").html("");
+        }
+    });
+    $("#pass").blur(function () {
+        var pass = $("#pass").val();
+
+        if (pass == "") {
+            $("#psmsg").html("密码不能为空");
+            // alert('密码不能为空');
+        }else{
+            $("#psmsg").html("");
+        }
+    });
+    $("#pass1").blur(function () {
+        var pass1 = $("#pass1").val();
+
+        if (pass1 == "") {
+            $("#p1smsg").html("确认密码不能为空");
+            // alert('密码不能为空');
+        }else{
+            $("#p1smsg").html("");
+        }
+    });
+    $("#sex").blur(function () {
+        var sex = $("#sex").val();
+
+        if (sex =="") {
+            $("#smsg").html("性别不能为空");
+            return;
+            // alert("性别不能为空");
+        }else{
+            $("#smsg").html("");
+        }
+    });
+    $("#age").blur(function () {
+        var age = $("#age").val();
+
+        if (age =="") {
+            $("#amsg").html("年龄不能为空");
+            return;
+            // alert("年龄不能为空");
+        }else{
+            $("#amsg").html("");
+        }
+    });
+    $("#reg").click(function () {
+        var phone = $("#phone").val();
+        if (phone == "") {
+            // alert('手机号不能为空');
+            $("#phmsg").html("手机号不能为空");
+            return;
+        }
+        if (phone.length !== 11) {
+            $("#phmsg").html("手机号长度错误");
+            return;
+        }
+        var name = $("#name").val();
+        if(name==""){
+            $("#nmsg").html("名字不能为空");
+            return;
+            // alert("名字不能为空");
+        }else{
+            $("#nmsg").html("");
+        }
+        var pass = $("#pass").val();
+        var pass1 = $("#pass1").val();
+        if (pass == "") {
+            $("#psmsg").html("密码不能为空");
+            return;
+        }if(pass1==""){
+            $("#p1smsg").html("确认密码不能为空");
+            return;
+        }if(pass!=pass1){
+            $("#p1smsg").html("两次密码不一致");
+            return;
+        }
+        var sex = $("#sex").val();
+        if (sex =="") {
+            $("#smsg").html("性别不能为空");
+            return;
+            // alert("性别不能为空");
+        }else{
+            $("#smsg").html("");
+        }
+        var age = $("#age").val();
+        if (age =="") {
+            $("#amsg").html("年龄不能为空");
+            return;
+            // alert("年龄不能为空");
+        }else {
+            if ($("#phmsg").html() == "") {
+                $("#amsg").html("");
+                $.ajax({
+                    type: "post",
+                    url: "/log/register",
+                    async: false,
+                    dataType: "json",
+                    data: {
+                        phone: $("#phone").val(),
+                        name: $("#name").val(),
+                        pass: $("#pass").val(),
+                        sex: $("#sex").val(),
+                        age: $("#age").val()
+                    },
+                    success: function (data) {
+                        if (data.s == "success") {
+                            window.location.href = "registerSuccess.html";
+                        }
+                        if(data.s=="fault"){
+                            $("#psmsg").html("密码格式错误密码要求6-16位可以是字母和数字");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        // // 状态码
+                        // console.log(XMLHttpRequest.status);
+                        // // 状态
+                        // console.log(XMLHttpRequest.readyState);
+                        // // 错误信息
+                        // console.log(textStatus);
+                        // console.log(1)
+                        // return false;
+                    },
+                });
+            }
+
+        }
+
+    });
+</script>
+</html>

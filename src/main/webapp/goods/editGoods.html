@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/jquery/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<form action="/goods/updateGoods" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="goods.id" value="#(goods.id)" ><br>
+    图片：<img src="#(imgurl+goods.image)" name="goods.image" id="img0" width="200" height="100">
+    <input type="hidden" name="goods.image" value="#(goods.image)">
+    <input id="file" type="file" name="file"><span id="fspan"></span><br>
+    商品名称：<input type="text" name="goods.goodsName" value="#(goods.goodsName)"><br>
+    价格：<input type="text" name="goods.price" value="#(goods.price)"><br>
+    数量：<input type="text" name="goods.number" value="#(goods.number)"><br>
+    <input type="submit" value="确认">
+</form>
+</body>
+<script>
+
+    $("#file").change(function(){
+        var objUrl = getObjectURL(this.files[0]) ;
+        console.log("objUrl = "+objUrl) ;
+        if (objUrl) {
+            $("#img0").attr("src", objUrl) ;
+        }
+    }) ;
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null ;
+        if (window.createObjectURL!=undefined) { // basic
+            url = window.createObjectURL(file) ;
+        } else if (window.URL!=undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        } else if (window.webkitURL!=undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+</script>
+</html>

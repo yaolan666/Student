@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="table_box">
+
+    <table class="list" border="1" >
+
+        <tbody>
+        <tr>
+
+            <td>商品名称</td>
+            <td>价格</td>
+            <td>数量</td>
+            <td>操作</td>
+        </tr>
+        #for(x : goodsPage.getList())
+        <tr>
+            <td style="text-align:left;">#(x.goodsName)</td>
+            <td style="text-align:left;">#(x.price)</td>
+            <td style="text-align:left;">#(x.number)</td>
+            <td><a href="/goods/delete/#(x.id)">删除</a>
+                <a href="/goods/edit/#(x.id)">修改</a></td>
+        </tr>
+        #end
+        </tbody>
+    </table>
+
+
+</div>
+</body>
+</html>
